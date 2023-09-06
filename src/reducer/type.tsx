@@ -4,7 +4,7 @@ export interface ISearchState {
   isLoading: boolean;
   isUpdated: boolean;
   isError: null | string;
-  SearchList: ISick[];
+  searchList: ISick[];
 }
 
 export enum SerachActionTypes {

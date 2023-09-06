@@ -2,8 +2,8 @@ import React, { useReducer, ReactNode, Dispatch } from "react";
 import { initialState, reducer } from "../reducer/searchReducer";
 import { SearchDispatchType } from "../reducer/type";
 
-const SearchStateContext = React.createContext(initialState);
-const SearchDispatchContext =
+export const SearchStateContext = React.createContext(initialState);
+export const SearchDispatchContext =
   React.createContext<Dispatch<SearchDispatchType> | null>(null);
 
 interface ISearchProviderProps {
