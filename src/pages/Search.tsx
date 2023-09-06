@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SearchResult from "../components/SearchResult";
 import SearchInput from "../components/SearchInput";
-import { SearchProvider } from "../context/searchContext";
+import { SearchProvider, SearchStateContext } from "../context/searchContext";
 
 const Search = () => {
   const [keyword, setkeyWord] = useState<string>("");
   const [focusIdx, setFocusIdx] = useState<number>(-1);
+  const [floorIdx, setFloorIdx] = useState<number>(-1);
 
   const changekeyWord = (serach: string) => {
     setkeyWord(serach);
+    setFocusIdx(-1);
   };
 
   const changeIdx = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown") {
+    console.log('floor',floorIdx)
+    console.log(focusIdx)
+    const isFloor = floorIdx <= focusIdx;
+    if (!isFloor && e.key === "ArrowDown") {
       setFocusIdx((preIdx) => preIdx + 1);
     }
     if (focusIdx > -1 && e.key === "ArrowUp") {
@@ -28,7 +33,11 @@ const Search = () => {
         keyWord={keyword}
         changeIdx={changeIdx}
       />
-      <SearchResult keyWord={keyword} selectIdx={focusIdx} />
+      <SearchResult
+        keyWord={keyword}
+        selectIdx={focusIdx}
+        changeFloorIdx={setFloorIdx}
+      />
     </SearchProvider>
   );
 };

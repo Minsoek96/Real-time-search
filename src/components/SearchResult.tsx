@@ -11,17 +11,24 @@ import SearchResultItem from "./SearchItem";
 interface SearchResultProps {
   keyWord: string;
   selectIdx: number;
+  changeFloorIdx: (idx: number) => void;
 }
 
-const SearchResult = ({ keyWord, selectIdx }: SearchResultProps) => {
+const SearchResult = ({
+  keyWord,
+  selectIdx,
+  changeFloorIdx,
+}: SearchResultProps) => {
   const { searchList, isLoading } = useContext(SearchStateContext);
   const dispatch = useContext(SearchDispatchContext);
   const debouncedQuery = useDebounce(keyWord, 500);
   const searchEmpty = searchList.length === 0;
+  const floorIdx = searchList.length - 1;
 
   useEffect(() => {
     if (debouncedQuery) {
       dispatch && getSick(dispatch, keyWord);
+      changeFloorIdx(floorIdx);
     }
   }, [keyWord, debouncedQuery]);
 
@@ -36,7 +43,7 @@ const SearchResult = ({ keyWord, selectIdx }: SearchResultProps) => {
           <SearchResultItem
             key={search.sickCd}
             sickNm={search.sickNm}
-            focuseIdx={selectIdx === idx}
+            isfocuse={selectIdx === idx}
           />
         ))}
     </div>
