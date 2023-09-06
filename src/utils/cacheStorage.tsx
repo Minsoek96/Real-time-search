@@ -32,5 +32,5 @@ export const getCacheStorage = (key: string) => {
     return null;
   }
 
-  return getChacheItem.data;
+  return getChacheItem;
 };
