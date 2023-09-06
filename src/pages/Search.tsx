@@ -1,27 +1,33 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import SearchResult from "../components/SearchResult";
 import SearchInput from "../components/SearchInput";
-import { SearchProvider, SearchStateContext } from "../context/searchContext";
+import { SearchProvider } from "../context/searchContext";
 
 const Search = () => {
   const [keyword, setkeyWord] = useState<string>("");
   const [focusIdx, setFocusIdx] = useState<number>(-1);
   const [floorIdx, setFloorIdx] = useState<number>(-1);
+  const [isSelect, setIsSelect] = useState<boolean>(false);
 
-  const changekeyWord = (serach: string) => {
-    setkeyWord(serach);
-    setFocusIdx(-1);
+  const changekeyWord = (search: string) => {
+    setkeyWord(search);
+    if (!isSelect) {
+      setFocusIdx(-1);
+    } else {
+      setIsSelect(false);
+    }
   };
 
   const changeIdx = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log('floor',floorIdx)
-    console.log(focusIdx)
     const isFloor = floorIdx <= focusIdx;
     if (!isFloor && e.key === "ArrowDown") {
       setFocusIdx((preIdx) => preIdx + 1);
     }
     if (focusIdx > -1 && e.key === "ArrowUp") {
       setFocusIdx((preIdx) => preIdx - 1);
+    }
+    if (e.key === "Enter") {
+      setIsSelect(true);
     }
     console.log(focusIdx);
   };
@@ -37,6 +43,8 @@ const Search = () => {
         keyWord={keyword}
         selectIdx={focusIdx}
         changeFloorIdx={setFloorIdx}
+        changeSelectMode={changekeyWord}
+        isSelectMode={isSelect}
       />
     </SearchProvider>
   );

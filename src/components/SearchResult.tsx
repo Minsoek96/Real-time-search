@@ -12,12 +12,16 @@ interface SearchResultProps {
   keyWord: string;
   selectIdx: number;
   changeFloorIdx: (idx: number) => void;
+  changeSelectMode: (selectItem: string) => void;
+  isSelectMode: boolean;
 }
 
 const SearchResult = ({
   keyWord,
   selectIdx,
   changeFloorIdx,
+  changeSelectMode,
+  isSelectMode,
 }: SearchResultProps) => {
   const { searchList, isLoading } = useContext(SearchStateContext);
   const dispatch = useContext(SearchDispatchContext);
@@ -31,6 +35,12 @@ const SearchResult = ({
       changeFloorIdx(floorIdx);
     }
   }, [keyWord, debouncedQuery]);
+
+  useEffect(() => {
+    if (isSelectMode) {
+      changeSelectMode(searchList[selectIdx].sickNm);
+    }
+  }, [isSelectMode]);
 
   if (isLoading) return <div> Loading</div>;
   if (searchEmpty) return <div> 검색결과 없음</div>;
