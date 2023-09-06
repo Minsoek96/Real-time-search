@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+## ⚙ 실행 방법
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+1. 프로젝트 내려받기: `git clone` [https://github.com/Minsoek96/Real-time-search.git ./](https://github.com/Minsoek96/Real-time-search.git) 
+2. 패키지 설치: `npm install`
+3. 애플리케이션 실행: `npm start` (브라우저가 자동으로 실행되어 홈페이지로 이동)
 
-In the project directory, you can run:
+## 📁 프로젝트 디렉토리 설명
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **src/api**: API 요청 관련 관리
+- **src/context**: Context 관련 관리
+- **src/hooks**: 커스텀 훅 관리
+- **src/pages**: 페이지 렌더링 컴포넌트 관리
+- **src/reducer**: 상태 변화 관리
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🔨구현 사항
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### **캐싱 구현 방법 :**
 
-### `npm run build`
+- 캐싱은 AXIOS 인터셉터를 사용하여 구현 했습니다.
+- 요청시 getCache Storage (key ) 반환 값이 있으면 요청중지를 위해 Error에 캐시 데이터를 반환합니다.
+- 응답시 응답값 데이터가 존재하면  setCacheStorage (key, data, etime) 에 저장합니다.
+- Error를 응답한 경우에 캐쉬데이터가 담겨있는경우 해당 데이터를 응답값으로 반환합니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **API 호출 최적화 전략 :**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 디바운싱 기법을 사용하여 구현 했습니다.
+- **`useDebounce`** 훅을 사용하여 일정 시간 동안 추가 입력이 없을 경우에만 API를 호출하도록 했습니다.
+- 사용자가 타이핑하는 동안에는 API 호출이 발생하지 않고, 타이핑이 멈춘 후 일정 시간이 지난 후에 API 호출이 일어나게 됩니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **키보드 네비게이션 기능 구현 :**
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **`useKeyNavigation`**라는 커스텀 훅을 사용하여 "ArrowUp"과 "ArrowDown" 키 입력을 감지하고, 현재 선택된 검색어의 인덱스를 변경하여 키보드로 검색어 목록을 탐색할 수 있도록 했습니다.
+- 아이템 바닥이 아니라면 “ArrowDown”  인데스 - 1
+- 아이템이 -1 보다 크면 “ArrowUp”  인덱스 + 1
+- Enter callback
