@@ -8,6 +8,7 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use(async (config) => {
+  console.info("calling api");
   const cacheKey = `${config.method}-${config.url}`;
   const getCache = await getCacheStorage(cacheKey);
   if (getCache) {
@@ -18,12 +19,16 @@ API.interceptors.request.use(async (config) => {
 
 API.interceptors.response.use(
   (response) => {
+    const isResponseData = response.data.length > 0
     const cachekey = `${response.config.method}-${response.config.url}`;
-    setCacheStorage({ key: cachekey, data: response.data, etime: 1 });
+    if(isResponseData){
+      setCacheStorage({ key: cachekey, data: response.data, etime: 1 });
+    }
     return response;
   },
   (error) => {
     if (error.customData) {
+      console.log('에러',error.customData)
       return error.customData;
     }
     return error;
