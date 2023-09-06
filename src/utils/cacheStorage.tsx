@@ -10,12 +10,11 @@ interface ICacheItem {
 export const setCacheStorage = ({ key, data, etime }: ICacheItem) => {
   const expireTimeFormat = etime * 60 * 1000;
   const item = {
-    sick: data,
+    data,
     expiretime: new Date().getTime() + expireTimeFormat,
   };
-  return localStorage.setItem(key, JSON.stringify(data));
+  return localStorage.setItem(key, JSON.stringify(item));
 };
-
 
 export const getCacheStorage = (key: string) => {
   const getCacheItemsStr = localStorage.getItem(key);
@@ -32,5 +31,6 @@ export const getCacheStorage = (key: string) => {
     localStorage.removeItem(key);
     return null;
   }
+
   return getChacheItem.data;
 };

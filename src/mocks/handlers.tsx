@@ -9,7 +9,7 @@ export const handlers = [
     const query = req.url.searchParams.get("query");
     if (query) {
       const results = data.filter((item: ISick) =>  item.sickNm.startsWith(query));
-      return res(ctx.status(200), ctx.json({ results }));
+      return res(ctx.status(200), ctx.json({ data:results }));
     }
 
     return res(ctx.status(400), ctx.json({ error: "Query parameter missing" }));
