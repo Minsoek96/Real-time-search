@@ -1,11 +1,20 @@
+import { SearchDispatchType, SerachActionTypes } from "../reducer/type";
 import { API } from "./client";
-export const getSick = async (searchKey: string) => {
+import { Dispatch } from "react";
+export const getSick = async(
+  dispatch: Dispatch<SearchDispatchType>,
+  searchKey: string
+) => {
   try {
+    dispatch({ type: SerachActionTypes.SEARCH_LIST_REQUEST });
     const response = await API.get(`/search?query=${searchKey}`);
     if (response) {
-      return response.data
+      dispatch({
+        type: SerachActionTypes.SEARCH_LIST_SUCCESS,
+        data: response.data,
+      });
     }
   } catch (error) {
-    throw error;
+    dispatch({ type: SerachActionTypes.SEARCH_LIST_FAILURE, error });
   }
 };
