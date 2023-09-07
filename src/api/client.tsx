@@ -28,7 +28,6 @@ API.interceptors.response.use(
   },
   (error) => {
     if (error.customData) {
-      console.log('에러',error.customData)
       return error.customData;
     }
     return error;

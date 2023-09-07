@@ -12,7 +12,8 @@ const SearchInput = ({
   changeIdx,
 }: SearchInputProps) => {
   const handleClick = () => {
-    console.log(keyWord);
+
+    
   };
   return (
     <div>
