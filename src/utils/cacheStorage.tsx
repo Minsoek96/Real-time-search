@@ -8,7 +8,8 @@ interface ICacheItem {
 }
 
 export const setCacheStorage = ({ key, data, etime }: ICacheItem) => {
-  const expireTimeFormat = etime * 60 * 1000;
+  const minuteInMilliseconds = 60 * 1000;
+  const expireTimeFormat = etime * minuteInMilliseconds;
   const item = {
     data,
     expiretime: new Date().getTime() + expireTimeFormat,
@@ -26,11 +27,16 @@ export const getCacheStorage = (key: string) => {
 
   const now = new Date().getTime();
   const expireTime = getChacheItem.expiretime;
+  const isTimeExpired = now > expireTime;
 
-  if (now > expireTime) {
-    localStorage.removeItem(key);
+  if (isTimeExpired) {
+    deleteCacheStorage(key);
     return null;
   }
 
   return getChacheItem;
+};
+
+export const deleteCacheStorage = (key: string) => {
+  localStorage.removeItem(key);
 };
